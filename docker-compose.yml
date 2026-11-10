@@ -1,0 +1,16 @@
+services:
+  finance-tutor:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file: .env            # must contain GROQ_API=...
+    volumes:
+      - kb_docs:/app/data/investment_reports   # knowledge-base documents (seeded from the image on first run)
+      - vector_index:/app/vector_db            # Chroma index
+      - app_data:/app/app_data                 # users + quiz history (SQLite)
+    restart: unless-stopped
+
+volumes:
+  kb_docs:
+  vector_index:
+  app_data:

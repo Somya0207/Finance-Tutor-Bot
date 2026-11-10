@@ -1,0 +1,14 @@
+[theme]
+base = "light"
+primaryColor = "#4F46E5"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[server]
+headless = true
+maxUploadSize = 20
+
+[browser]
+gatherUsageStats = false

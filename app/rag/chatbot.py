@@ -1,25 +1,11 @@
-from app.rag.retriever import get_retriever
-from app.llm.llm_model import get_llm
+from app.quiz.tutor_engine import ask_tutor
 
-retriever = get_retriever()
-llm = get_llm()
 
-def finance_chat(question):
-
-    docs = retriever.invoke(question)
-
-    context = "\n".join([doc.page_content for doc in docs])
-
-    prompt = f"""
-Use the following finance knowledge to answer the question.
-
-Context:
-{context}
-
-Question:
-{question}
-"""
-
-    response = llm.invoke(prompt)
-
-    return response.content
+def finance_chat(question, history=None, report_context=None):
+    """Conversational RAG answer. Returns (answer_text, retrieved_docs)."""
+    return ask_tutor(
+        question,
+        report_context=report_context,
+        style="Answer conversationally and concisely.",
+        history=history,
+    )

@@ -1,0 +1,17 @@
+Derivatives and Risk Management
+
+A derivative is a financial contract whose value depends on an underlying asset such as a stock, bond, commodity, currency or index.
+
+A forward contract is a private agreement to buy or sell an asset at a set price on a future date. A futures contract is a standardised version traded on an exchange and settled daily through margin accounts, which reduces counterparty risk.
+
+An option gives the holder the right, but not the obligation, to buy or sell an asset at a strike price on or before an expiry date. A call option gives the right to buy; a put option gives the right to sell. The price paid for the option is called the premium.
+
+The maximum loss for the buyer of an option is the premium paid. The seller (writer) of an uncovered call option faces theoretically unlimited loss.
+
+Option prices depend on the underlying price, the strike price, time to expiry, volatility, and interest rates. The Black-Scholes model is a widely used formula for pricing European options.
+
+A swap is an agreement to exchange cash flows. In an interest rate swap, one party pays a fixed rate and receives a floating rate, which lets firms convert floating-rate debt into fixed-rate debt.
+
+Hedging means taking a position that offsets an existing risk, for example an airline buying fuel futures to lock in costs. Speculation means taking on risk in the hope of profit.
+
+Value at Risk (VaR) estimates the maximum loss over a given time horizon at a chosen confidence level. For example, a one-day 95% VaR of 2 million means the portfolio is expected to lose more than 2 million on only about 5% of days.

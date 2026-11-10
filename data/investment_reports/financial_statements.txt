@@ -1,0 +1,19 @@
+Financial Statements and Ratios
+
+The three core financial statements are the income statement, the balance sheet and the cash flow statement.
+
+The income statement reports revenue, expenses and profit over a period. Gross profit is revenue minus cost of goods sold. Operating income (EBIT) is gross profit minus operating expenses. Net income is what remains after interest and taxes.
+
+The balance sheet is a snapshot at a point in time and follows the equation: assets equal liabilities plus shareholders' equity. Current assets are expected to be converted to cash within one year.
+
+The cash flow statement splits cash movements into operating, investing and financing activities. A company can report a profit yet run short of cash, which is why the cash flow statement matters.
+
+Liquidity ratios test the ability to pay short-term obligations. The current ratio equals current assets divided by current liabilities. The quick ratio excludes inventory from current assets because inventory may be hard to sell quickly.
+
+Profitability ratios include gross margin, operating margin and net margin. Return on equity (ROE) equals net income divided by shareholders' equity. Return on assets (ROA) equals net income divided by total assets.
+
+Leverage ratios show how much debt a firm uses. The debt-to-equity ratio equals total debt divided by shareholders' equity. The interest coverage ratio equals EBIT divided by interest expense; a low value signals difficulty servicing debt.
+
+The DuPont analysis breaks ROE into three parts: net profit margin, asset turnover and the equity multiplier (financial leverage).
+
+EBITDA stands for earnings before interest, taxes, depreciation and amortisation and is often used as a rough proxy for operating cash earnings.

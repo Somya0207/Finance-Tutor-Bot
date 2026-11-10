@@ -1,0 +1,15 @@
+Equity Valuation
+
+The price-to-earnings (P/E) ratio equals the share price divided by earnings per share (EPS). A high P/E can mean investors expect strong growth, or that the stock is expensive. P/E should be compared with companies in the same industry.
+
+The price-to-book (P/B) ratio compares market capitalisation with the book value of equity on the balance sheet. It is often used for banks and other asset-heavy firms.
+
+The PEG ratio divides the P/E ratio by the expected earnings growth rate. A PEG near 1 is often read as fair value for the growth on offer.
+
+Dividend yield equals annual dividends per share divided by the share price. The dividend payout ratio is the share of earnings paid out as dividends.
+
+The discounted cash flow (DCF) method values a company as the present value of its expected future free cash flows. Free cash flow is operating cash flow minus capital expenditure. The discount rate is usually the weighted average cost of capital (WACC), which blends the cost of debt and the cost of equity according to the firm's capital structure.
+
+The terminal value in a DCF captures all cash flows beyond the explicit forecast period. A common formula is the Gordon growth model: terminal value equals next year's free cash flow divided by (discount rate minus the perpetual growth rate). Terminal value often makes up most of the total DCF value, so the result is very sensitive to the growth and discount rate assumptions.
+
+Market capitalisation equals the share price multiplied by the number of shares outstanding. Enterprise value equals market capitalisation plus debt minus cash, and is used in multiples such as EV/EBITDA.

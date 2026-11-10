@@ -1,6 +1,6 @@
 # 📊 Finance Tutor Bot
 
-An AI-powered finance learning assistant that combines **Retrieval-Augmented Generation (RAG)**, **quiz generation**, **study notes generation**, and **voice interaction** in a single Streamlit app — built to help students and self-learners understand finance concepts, test their knowledge, and get personalized feedback.
+An AI-powered finance learning assistant that combines **Retrieval-Augmented Generation (RAG)**, **quiz generation**, **study notes**, **voice interaction**, and **user accounts with saved quiz history** in a single Streamlit app — built to help students and self-learners understand finance concepts, test their knowledge, and track their progress.
 
 ---
 
@@ -8,34 +8,25 @@ An AI-powered finance learning assistant that combines **Retrieval-Augmented Gen
 
 | Feature | Description |
 |---|---|
-| 🎓 **Ask Finance Question** | Ask any finance question by typing or speaking. Answers are grounded in a document knowledge base using RAG, and can be read back aloud. |
-| 📝 **Generate Quiz** | Auto-generates multiple-choice quizzes on any finance topic (optionally grounded in an uploaded investment report PDF), with adjustable difficulty and question count. Answers are graded by an LLM evaluator, and results can be exported as a PDF. |
-| 💬 **Finance Chatbot** | A conversational chatbot that can answer follow-up questions about an uploaded finance report, with full chat history and voice input/output. |
-| 🗒️ **Study Notes** | Generates structured, exam-ready study notes on any finance topic and exports them as a formatted PDF. |
+| 🎓 **Ask Finance Question** | Ask by typing or speaking. Answers are grounded in the knowledge base via RAG, **show the sources they used**, and can be read aloud. |
+| 📝 **Generate Quiz** | Auto-generates multiple-choice quizzes on any topic (optionally grounded in an uploaded PDF report) with adjustable difficulty and length. Scoring is deterministic; the LLM gives feedback on the questions you got wrong. Results export to PDF. |
+| 💬 **Finance Chatbot** | Conversational follow-ups with chat history, optional uploaded report, voice input/output and source citations. |
+| 🗒️ **Study Notes** | Structured, exam-ready notes on any topic, exported as a formatted PDF. |
+| 📚 **Knowledge Base** | Upload `.pdf`, `.csv`, `.txt` or `.md` files and they are indexed immediately. |
+| 📈 **My Quiz History** | Register / sign in to save every quiz attempt and see your average score. Guests can use everything else. |
 
 ---
 
 ## 🧠 How It Works
 
-The project is built around a **RAG (Retrieval-Augmented Generation) pipeline**:
-
-1. Finance documents (`.txt` files) are loaded and split into chunks.
-2. Each chunk is converted into a vector embedding using a HuggingFace sentence-transformer model.
-3. Embeddings are stored in a **Chroma** vector database.
-4. When a user asks a question, the most relevant chunks are retrieved from Chroma and passed to an **LLM (Llama 3.1 8B via Groq)** as context.
-5. The LLM generates a grounded, context-aware answer.
+1. Documents (`.txt`, `.md`, `.pdf`, `.csv`) are loaded and split into chunks.
+2. Each chunk is embedded with a HuggingFace sentence-transformer and stored in **Chroma**.
+3. A question retrieves the most relevant chunks, which are passed to **Llama 3.1 8B (via Groq)** together with the question, optional report excerpts and recent chat history.
+4. The answer is shown with numbered **source citations** (file + snippet).
+5. The index is **built automatically on first run** from `data/investment_reports/`, so the app works out of the box.
 
 ```
-User Question
-     │
-     ▼
-Retriever (Chroma vector DB)
-     │  fetches relevant document chunks
-     ▼
-LLM (Groq / Llama 3.1 8B)
-     │  generates answer using retrieved context
-     ▼
-Streamlit UI  →  (optional) Text-to-Speech
+Question ─► Retriever (Chroma) ─► top-k chunks ─► LLM (Groq / Llama 3.1 8B) ─► Answer + sources ─► (optional) text-to-speech
 ```
 
 ---
@@ -44,130 +35,149 @@ Streamlit UI  →  (optional) Text-to-Speech
 
 ```
 Finance-Tutor-Bot/
-├── main.py                      # Simple CLI demo (standalone evaluator test)
-├── build_db.py                  # One-time script to build the Chroma vector database
-├── requirements.txt             # Python dependencies
+├── main.py                      # CLI demo of the answer evaluator
+├── build_db.py                  # Rebuild the vector index manually
+├── requirements.txt             # Complete top-level dependencies
+├── requirements-dev.txt         # + pytest
+├── Dockerfile / docker-compose.yml
+├── pytest.ini
 │
 ├── app/
-│   ├── llm/
-│   │   └── llm_model.py         # Groq LLM client configuration
-│   │
+│   ├── config.py                # Absolute paths, model + retrieval settings, API-key lookup
+│   ├── errors.py                # User-friendly error types shown by the UI
+│   ├── llm/llm_model.py         # Lazy Groq client + invoke_llm() with error wrapping
 │   ├── rag/
-│   │   ├── loader.py            # Loads .txt documents from disk
-│   │   ├── embedding.py         # Sentence-transformer embedding model
-│   │   ├── vector_store.py      # Builds/persists the Chroma vector store
-│   │   ├── retriever.py         # Wraps Chroma as a retriever
-│   │   └── chatbot.py           # RAG-based chatbot logic
-│   │
+│   │   ├── loader.py            # .txt/.md/.pdf/.csv loading
+│   │   ├── embedding.py         # Cached sentence-transformer model
+│   │   ├── vector_store.py      # Build / incrementally update / auto-build the Chroma index
+│   │   ├── retriever.py         # Chroma retriever
+│   │   ├── sources.py           # Builds citation data for the UI
+│   │   └── chatbot.py           # Conversational wrapper around the tutor
 │   ├── quiz/
-│   │   ├── quiz_generator.py    # Generates MCQ quizzes as structured JSON
-│   │   ├── evaluator.py         # Grades a student's free-text answer
-│   │   └── tutor_engine.py      # RAG-based "ask a tutor" Q&A logic
-│   │
-│   ├── notes/
-│   │   └── notes_generator.py   # Generates structured study notes
-│   │
+│   │   ├── quiz_generator.py    # Robust JSON parsing, validation, answer resolution
+│   │   ├── evaluator.py         # LLM feedback on an answer
+│   │   └── tutor_engine.py      # RAG Q&A (returns answer + retrieved docs)
+│   ├── notes/notes_generator.py
+│   ├── database/db.py           # SQLite: users (PBKDF2) + quiz history
 │   └── utils/
-│       └── voice_utils.py       # Speech-to-text and text-to-speech helpers
+│       ├── voice_utils.py       # Browser-recorded audio → text, text → speech
+│       ├── pdf_export.py        # Notes / quiz-result PDFs (escapes LLM text safely)
+│       └── text.py              # PDF text extraction
 │
-└── frontend/
-    └── app.py                   # Streamlit UI — wires all features together
+├── data/investment_reports/     # Seed knowledge base (bonds, valuation, portfolio theory, ...)
+├── eval/                        # Retrieval evaluation (hit@k, MRR) across chunking strategies
+├── tests/                       # Unit + pipeline tests
+├── frontend/app.py              # Streamlit UI
+└── .github/workflows/tests.yml  # CI
 ```
 
-> 📄 **New to this codebase?** See [`PROJECT_EXPLAINED.pdf`](./PROJECT_EXPLAINED.pdf) for a beginner-friendly, file-by-file walkthrough of every concept used in this project.
+> 📄 [`PROJECT_EXPLAINED.pdf`](./PROJECT_EXPLAINED.pdf) is a beginner walkthrough written for the original version of the project; the file layout above is the current one.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **LLM:** Groq API — Llama 3.1 8B Instant (via `langchain-groq`)
-- **RAG Orchestration:** LangChain
-- **Vector Database:** Chroma
-- **Embeddings:** `sentence-transformers/all-MiniLM-L6-v2` (HuggingFace, CPU)
-- **Frontend:** Streamlit
-- **PDF Handling:** PyPDF2 (read), ReportLab (generate)
-- **Voice:** SpeechRecognition (speech-to-text), gTTS (text-to-speech)
+- **LLM:** Groq — Llama 3.1 8B Instant (`langchain-groq`; override with `FTB_MODEL`)
+- **RAG:** LangChain 1.x (`langchain-chroma`, `langchain-huggingface`; falls back to `langchain-community` if that's what you have) + Chroma, embeddings `sentence-transformers/all-MiniLM-L6-v2` (CPU)
+- **Frontend:** Streamlit (≥ 1.39)
+- **Persistence:** SQLite (users, quiz history)
+- **PDF:** pypdf (read), ReportLab (write)
+- **Voice:** SpeechRecognition + browser recording (speech-to-text), gTTS (text-to-speech)
 
 ---
 
 ## ⚙️ Setup & Installation
 
-### 1. Clone the repository
 ```bash
 git clone https://github.com/Somya0207/Finance-Tutor-Bot.git
 cd Finance-Tutor-Bot
-```
-
-### 2. Create a virtual environment
-```bash
 python -m venv venv
-source venv/bin/activate      # On Windows: venv\Scripts\activate
-```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-> ⚠️ **Note:** `requirements.txt` currently only lists transitive/sub-dependencies. Make sure the following top-level packages are also installed, as they're imported directly in the code but missing from the file:
-> ```
-> streamlit
-> langchain-groq
-> langchain-community
-> PyPDF2
-> reportlab
-> SpeechRecognition
-> gTTS
-> python-dotenv
-> ```
-
-### 4. Set up environment variables
-Create a `.env` file in the project root:
-```
-GROQ_API=your_groq_api_key_here
-```
-Get a free API key at [console.groq.com](https://console.groq.com).
-
-### 5. Add source documents
-Create a folder `data/investment_reports/` in the project root and add `.txt` files containing finance knowledge (articles, notes, reports, etc.) that the RAG system will retrieve from.
-
-### 6. Build the vector database
-```bash
-python build_db.py
-```
-This creates a `vector_db/` folder containing the Chroma index.
-
-### 7. Run the app
-```bash
+source venv/bin/activate          # Windows: venv\Scripts\activate
+pip install -r requirements.txt   # tip: create a fresh venv; old Flask-era packages are not needed
+cp .env.example .env              # then put your key in .env  (free key: console.groq.com)
 streamlit run frontend/app.py
 ```
 
+That's it — the seed documents ship with the repo and the vector index is built on the first question (the first run also downloads the embedding model, ~90 MB). To rebuild the index manually: `python build_db.py`.
+
+> **Windows tip:** don't create a lock file with `pip freeze > requirements.txt` in PowerShell — it saves UTF-16. Use `pip freeze | Out-File -Encoding utf8 requirements-lock.txt` (or run it from Command Prompt / Git Bash).
+
+### Add your own knowledge
+
+Use the **Knowledge Base** page in the app, or drop `.txt`, `.md`, `.pdf` or `.csv` files into `data/investment_reports/` and run `python build_db.py`. CSV rows are turned into readable `column: value` lines.
+
+### Accounts
+
+Register from the sidebar to save quiz history. Set `REQUIRE_LOGIN=1` to require sign-in for the whole app. Passwords are stored as salted PBKDF2-SHA256 hashes in a local SQLite file (`app_data/finance_tutor.db`).
+
 ---
 
-## 📸 Screenshots
+## 🐳 Docker
 
-*(Add screenshots or a short demo GIF of the app here — this significantly boosts recruiter engagement on GitHub/resumes.)*
+```bash
+cp .env.example .env              # add GROQ_API
+docker compose up --build         # open http://localhost:8501
+```
+
+Documents, the vector index and the SQLite database live in named volumes, so they survive restarts.
+
+---
+
+## ☁️ Deploy a live demo (Streamlit Community Cloud)
+
+1. Push the repo to GitHub.
+2. On [share.streamlit.io](https://share.streamlit.io) create an app: repository = yours, **main file = `frontend/app.py`**.
+3. In **Advanced settings → Secrets** add `GROQ_API = "your_key"` (see `.streamlit/secrets.toml.example`).
+4. Deploy, then put the URL here: **Live demo: _<add your URL>_**
+
+Notes: the free tier has limited memory (the embedding model needs a few hundred MB) and an **ephemeral disk** — accounts, quiz history and uploaded documents reset when the app restarts or redeploys. For persistence use Docker with volumes or a hosted database.
+
+---
+
+## 🧪 Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+Covers quiz parsing/validation/answer resolution, the RAG prompt and citation logic, LLM error handling, loaders (txt/md/csv/pdf), PDF export (including special characters), the SQLite auth/history layer, the eval scoring, and that every eval question is answerable from the seed data. The Chroma pipeline tests use a fake embedding model (no downloads) and are skipped automatically if `chromadb` isn't installed. CI runs everything via GitHub Actions.
+
+### Retrieval evaluation
+
+Compare chunking strategies on 16 questions with known answers:
+
+```bash
+python -m eval.build_variants     # builds vector_db_none / _500 / _1000
+python -m eval.retrieval_eval     # prints hit@4, MRR and average context size per variant
+```
 
 ---
 
 ## 🚧 Known Limitations
 
-- `requirements.txt` is incomplete (see setup note above).
-- `data/investment_reports/` and `vector_db/` are not included in the repo (gitignored) — the app won't run out-of-the-box without seed data.
-- Voice features (`speech_recognition`) require a local microphone and internet access to Google's recognition API — this won't work on cloud deployments like Streamlit Community Cloud without modification.
-- No automated tests currently exist.
-- API keys and errors (e.g. failed LLM calls, empty retriever) are not gracefully handled in the UI.
+- **Voice** uses Google's free web speech API (via `SpeechRecognition`) and gTTS, so both need internet access and have no SLA. Recording happens in the browser (works on cloud deployments) but needs Streamlit ≥ 1.39 and microphone permission (HTTPS or localhost).
+- The **seed knowledge base is small** (seven short documents). For topics outside it the tutor says so and falls back to the LLM's general knowledge, which can be wrong — check the Sources panel.
+- **LLM-generated quizzes and feedback can contain mistakes**; scoring itself is deterministic.
+- **Authentication is deliberately basic**: no password reset, email verification or rate limiting, and SQLite is single-node. Don't use it for sensitive data.
+- The **knowledge base is shared** by everyone using an instance (no per-user documents).
+- On Streamlit Community Cloud, storage is ephemeral (see above).
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Add unit tests (`pytest`) for `evaluator.py`, `quiz_generator.py`, and the RAG pipeline
-- [ ] Add proper error handling and empty-state UI messages
-- [ ] Dockerize the app for one-command setup
-- [ ] Deploy a live demo
-- [ ] Add source-citation to RAG answers (show which document/chunk was used)
-- [ ] Support PDF/CSV ingestion directly into the knowledge base, not just `.txt`
-- [ ] Add user authentication and quiz history persistence (e.g. SQLite)
+- [x] Unit tests (`pytest`) for the evaluator, quiz generator, RAG pipeline and more
+- [x] Error handling and empty-state messages in the UI
+- [x] Dockerized (`Dockerfile`, `docker-compose.yml`)
+- [x] Deployment config for a live demo (add your URL once deployed)
+- [x] Source citations on RAG answers
+- [x] PDF / CSV (and Markdown) ingestion into the knowledge base
+- [x] User authentication and quiz-history persistence (SQLite)
+- [ ] Password reset / OAuth sign-in
+- [ ] Per-user knowledge bases
+- [ ] Hybrid search + reranking, streaming answers
+- [ ] Postgres option for multi-instance deployments
 
 ---
 

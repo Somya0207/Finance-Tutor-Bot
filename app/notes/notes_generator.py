@@ -1,8 +1,10 @@
-from app.llm.llm_model import get_llm
+from app.llm import llm_model
 
-llm = get_llm()
 
 def generate_notes(topic):
+    topic = (topic or "").strip()
+    if not topic:
+        raise ValueError("Please enter a topic first.")
 
     prompt = f"""
     Create structured study notes about {topic}
@@ -12,8 +14,10 @@ def generate_notes(topic):
     - Key concepts
     - Examples
     - Important points for exams
+
+    Formatting rules:
+    - Keep it concise (about 400-600 words) and finish every section.
+    - Write formulas in LaTeX between single dollar signs, like $D = \\frac{{a}}{{b}}$.
+      Do not use backslash-parenthesis or backslash-bracket delimiters.
     """
-
-    response = llm.invoke(prompt)
-
-    return response.content
+    return llm_model.invoke_llm(prompt)

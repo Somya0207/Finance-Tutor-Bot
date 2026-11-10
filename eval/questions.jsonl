@@ -1,0 +1,16 @@
+{"question": "What does bond duration measure?", "source": "bonds.txt", "key_fact": "sensitivity to interest rate"}
+{"question": "What rating makes a bond investment grade?", "source": "bonds.txt", "key_fact": "BBB- or higher"}
+{"question": "What is the Rule of 72 used for?", "source": "personal_finance.txt", "key_fact": "divide 72 by the annual interest rate"}
+{"question": "How much cash should an emergency fund hold?", "source": "personal_finance.txt", "key_fact": "three to six months"}
+{"question": "What does dollar-cost averaging mean?", "source": "personal_finance.txt", "key_fact": "fixed amount at regular intervals"}
+{"question": "What does the Sharpe ratio measure?", "source": "portfolio_theory.txt", "key_fact": "risk-adjusted performance"}
+{"question": "What is unsystematic risk?", "source": "portfolio_theory.txt", "key_fact": "can be diversified away"}
+{"question": "What does a beta above 1 mean?", "source": "portfolio_theory.txt", "key_fact": "more volatile than the market"}
+{"question": "How is the PEG ratio calculated?", "source": "equity_valuation.txt", "key_fact": "divides the P/E ratio by the expected earnings growth rate"}
+{"question": "What discount rate is used in a DCF valuation?", "source": "equity_valuation.txt", "key_fact": "weighted average cost of capital"}
+{"question": "What equation does the balance sheet follow?", "source": "financial_statements.txt", "key_fact": "assets equal liabilities plus shareholders' equity"}
+{"question": "Why does the quick ratio differ from the current ratio?", "source": "financial_statements.txt", "key_fact": "excludes inventory"}
+{"question": "What three parts does DuPont analysis split ROE into?", "source": "financial_statements.txt", "key_fact": "net profit margin, asset turnover and the equity multiplier"}
+{"question": "What is the maximum loss for an option buyer?", "source": "derivatives_and_risk.txt", "key_fact": "premium paid"}
+{"question": "How do futures reduce counterparty risk?", "source": "derivatives_and_risk.txt", "key_fact": "margin accounts"}
+{"question": "What can an interest rate swap be used for?", "source": "derivatives_and_risk.txt", "key_fact": "convert floating-rate debt into fixed-rate debt"}

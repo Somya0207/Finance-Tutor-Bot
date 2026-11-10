@@ -1,0 +1,15 @@
+Portfolio Theory and Risk
+
+Modern portfolio theory, introduced by Harry Markowitz, shows that investors can reduce risk without giving up expected return by combining assets that do not move perfectly together. The key input is the correlation between asset returns: the lower the correlation, the larger the benefit of diversification.
+
+Total risk can be split into systematic risk and unsystematic risk. Unsystematic (idiosyncratic) risk is specific to one company or industry and can be diversified away. Systematic (market) risk affects the whole market, such as recessions or interest rate shocks, and cannot be eliminated by diversification.
+
+Beta measures how much a stock moves relative to the overall market. A beta of 1 means the stock moves with the market, a beta above 1 means it is more volatile than the market, and a beta below 1 means it is less volatile.
+
+The Capital Asset Pricing Model (CAPM) says expected return equals the risk-free rate plus beta multiplied by the market risk premium. The market risk premium is the expected market return minus the risk-free rate.
+
+The Sharpe ratio measures risk-adjusted performance. It equals the portfolio's return minus the risk-free rate, divided by the standard deviation of the portfolio's returns. A higher Sharpe ratio means better return per unit of total risk.
+
+The efficient frontier is the set of portfolios that offer the highest expected return for each level of risk. Portfolios below the frontier are inefficient because the same return could be achieved with less risk.
+
+Asset allocation, the split between stocks, bonds and cash, is the main driver of long-term portfolio behaviour. Rebalancing means periodically selling assets that have grown beyond their target weight and buying those that have fallen below it.

@@ -1,6 +1,14 @@
-venv/
-**/__pycache__/
-*.pyc
-vector_db/
 .env
-data/
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated at runtime (rebuilt automatically from data/)
+vector_db/
+vector_db_*/
+app_data/
+.streamlit/secrets.toml
+
+# NOTE: data/investment_reports/ is intentionally tracked so the app works out of the box.

@@ -1,0 +1,15 @@
+Personal Finance Basics
+
+The time value of money is the idea that a unit of money today is worth more than the same unit in the future, because money today can be invested to earn a return. Present value discounts future cash flows; future value compounds today's money forward.
+
+Compound interest means earning interest on both the original principal and on interest already earned. The Rule of 72 estimates how long money takes to double: divide 72 by the annual interest rate in percent. At 8% a year, money doubles in about 9 years.
+
+Inflation is the general rise in prices over time, which reduces purchasing power. The real return of an investment is approximately its nominal return minus the inflation rate.
+
+An emergency fund is cash set aside for unexpected expenses. A common guideline is to hold three to six months of essential living costs in an easily accessible account.
+
+Index funds and exchange-traded funds (ETFs) hold a basket of securities that tracks a market index. They usually have lower fees than actively managed funds. The expense ratio is the annual fee charged as a percentage of assets under management.
+
+Dollar-cost averaging means investing a fixed amount at regular intervals regardless of price. It reduces the risk of investing a large sum just before a market fall, though it does not guarantee a profit.
+
+A credit score summarises a borrower's creditworthiness. Paying bills on time and keeping credit card balances low relative to the limit are the biggest positive factors.

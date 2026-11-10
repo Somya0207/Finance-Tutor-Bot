@@ -1,0 +1,15 @@
+Bonds and Fixed Income
+
+A bond is a loan made by an investor to a borrower, usually a government or a company. The borrower pays periodic interest, called the coupon, and returns the face value (par value) at maturity. The coupon rate is the annual interest paid as a percentage of face value.
+
+Yield to maturity (YTM) is the total annualised return an investor earns if the bond is held until it matures and all payments are made on time. It is the discount rate that makes the present value of all future cash flows equal to the bond's current price.
+
+Bond prices and interest rates move in opposite directions. When market interest rates rise, existing bonds with lower coupons become less attractive, so their prices fall. When rates fall, existing bond prices rise.
+
+Duration measures a bond's sensitivity to interest rate changes. Bond duration measures sensitivity to interest rate changes: a bond with a duration of 5 years will lose roughly 5% of its price if yields rise by 1 percentage point. Longer maturities and lower coupons produce higher duration.
+
+Convexity captures the curvature in the price-yield relationship. It improves the duration estimate for large changes in interest rates, and positive convexity is generally good for the bondholder.
+
+Credit risk is the risk that the issuer fails to make payments. Credit ratings from agencies such as S&P and Moody's summarise this risk. Bonds rated BBB- or higher by S&P are called investment grade; bonds rated below that are called high-yield or junk bonds and pay higher yields to compensate for default risk.
+
+A zero-coupon bond pays no periodic interest. It is sold at a discount to face value and the investor's return is the difference between the purchase price and the face value received at maturity.
